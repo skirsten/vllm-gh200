@@ -193,7 +193,15 @@ RUN ldconfig /usr/local/cuda-$(echo $CUDA_VERSION | cut -d. -f1,2)/compat/
 # after this step
 RUN --mount=type=cache,target=/root/.cache/uv \
     if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
-        uv pip install --system --index-url https://download.pytorch.org/whl/nightly/cu124 "torch==2.6.0.dev20241210+cu124" "torchvision==0.22.0.dev20241215";  \
+        uv pip install --system --index-url https://download.pytorch.org/whl/nightly/cu126 "torch==2.7.0.dev20250121+cu126" "torchvision==0.22.0.dev20250121";  \
+    fi
+
+# arm64 (GH200) pytorch build does not include triton,
+# so we need to build it from source
+RUN --mount=type=cache,target=/root/.cache/uv \
+    if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
+        uv pip install --system ninja cmake wheel pybind11;  \
+        uv pip install --system --no-build-isolation git+https://github.com/triton-lang/triton.git#subdirectory=python;  \
     fi
 
 # Install vllm wheel first, so that torch etc will be installed.
