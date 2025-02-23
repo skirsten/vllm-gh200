@@ -201,7 +201,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 RUN --mount=type=cache,target=/root/.cache/uv \
     if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
         uv pip install --system ninja cmake wheel pybind11;  \
-        uv pip install --system --no-build-isolation git+https://github.com/triton-lang/triton.git#subdirectory=python;  \
+        uv pip install --system --no-build-isolation git+https://github.com/triton-lang/triton.git@4b3bb1f8da0ded6ccd572dd1358ef45af5a1befe#subdirectory=python;  \
     fi
 
 # Install vllm wheel first, so that torch etc will be installed.
