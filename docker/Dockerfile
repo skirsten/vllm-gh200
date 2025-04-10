@@ -128,6 +128,8 @@ RUN --mount=type=cache,target=/root/.cache/uv \
         && sccache --show-stats; \
     fi
 
+RUN apt-get update -y && apt-get install -y libnuma1
+
 ENV CCACHE_DIR=/root/.cache/ccache
 RUN --mount=type=cache,target=/root/.cache/ccache \
     --mount=type=cache,target=/root/.cache/uv \
